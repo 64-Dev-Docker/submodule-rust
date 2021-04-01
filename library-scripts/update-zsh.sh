@@ -29,7 +29,7 @@ else
 fi
 
 # we want the 'powerline' theme
-sed -i 's/ZSH_THEME=".*"/ZSH_THEME="darkblood"/g' ${USER_RC_PATH}/.zshrc
+sed -i 's/ZSH_THEME=".*"/ZSH_THEME="agnoster"/g' ${USER_RC_PATH}/.zshrc
 
 # we want VI on the shell cli
 echo '# setting VI mode on the terminal 2021-01-30::wjs' >>${USER_RC_PATH}/.zshrc
