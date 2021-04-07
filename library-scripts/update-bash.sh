@@ -36,4 +36,4 @@ echo '# setting VI mode on the terminal 2021-01-30::wjs' >>${USER_RC_PATH}/.bash
 echo 'set -o vi' >>${USER_RC_PATH}/.bashrc
 
 # we want git to use nvim
-git config --global core.editor "nvim"
+git config --global core.editor "vi"

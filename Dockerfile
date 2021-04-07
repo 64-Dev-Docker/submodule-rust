@@ -33,11 +33,9 @@ ARG NODE_VERSION="lts/*"
 RUN if [ "${INSTALL_NODE}" = "true" ]; then su vscode -c "umask 0002 && . /usr/local/share/nvm/nvm.sh && nvm install ${NODE_VERSION} 2>&1"; fi
 
 # Install my tooling
-COPY library-scripts/github-ssh.sh \
-    library-scripts/update-zsh.sh \
+COPY library-scripts/update-bash.sh \
     /tmp/library-scripts/
-RUN bash /tmp/library-scripts/github-ssh.sh "${USERNAME}" \
-    && bash /tmp/library-scripts/update-zsh.sh "${USERNAME}" \
+RUN bash /tmp/library-scripts/update-bash.sh "${USERNAME}" \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts
 
 # ARG INSTALL_NEOVIM="true"
