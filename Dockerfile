@@ -14,18 +14,6 @@ COPY library-scripts/node-debian.sh /tmp/library-scripts/
 RUN if [ "$INSTALL_NODE" = "true" ]; then bash /tmp/library-scripts/node-debian.sh "${NVM_DIR}" "${NODE_VERSION}" "${USERNAME}"; fi \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts
 
-# Install my tooling
-COPY library-scripts/update-bash.sh \
-    /tmp/library-scripts/
-RUN bash /tmp/library-scripts/update-bash.sh "${USERNAME}" \
-    && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts
-
-# ARG INSTALL_NEOVIM="true"
-# COPY library-scripts/init.vim \
-#     library-scripts/install-neovim.sh \
-#     /tmp/library-scripts/
-# RUN bash /tmp/library-scripts/install-neovim.sh "${USERNAME}"
-
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
@@ -35,3 +23,26 @@ RUN bash /tmp/library-scripts/update-bash.sh "${USERNAME}" \
 
 # [Optional] Uncomment this line to install global node packages.
 # RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1
+
+# Install NeoVim 
+# ARG INSTALL_NEOVIM="true"
+COPY custom-scripts/neovim/* /tmp/library-scripts/
+RUN bash /tmp/library-scripts/install-neovim.sh "${USERNAME}" \
+    && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
+
+# Install and configure zsh
+COPY custom-scripts/zsh/* /tmp/library-scripts/
+RUN /bin/bash /tmp/library-scripts/update-zsh.sh "${USERNAME}" \
+    && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
+
+# Configure GIT ...
+COPY custom-scripts/git/* /tmp/library-scripts/
+RUN /bin/bash /tmp/library-scripts/configure-git.sh "${USERNAME}" \
+    && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
+
+# Configure SSH ... 
+# Configure commit signing
+COPY custom-scripts/security/* /tmp/library-scripts/
+RUN /bin/bash /tmp/library-scripts/configure-sign.sh "${USERNAME}" \
+    /bin/bash /tmp/certs/configure-cert.sh \
+    && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
