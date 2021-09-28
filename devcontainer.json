@@ -27,6 +27,7 @@
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		// my common extensions
+"vtrois.gitmoji-vscode",
 		"mutantdino.resourcemonitor",
 		"formulahendry.code-runner",
 		"asciidoctor.asciidoctor-vscode",
